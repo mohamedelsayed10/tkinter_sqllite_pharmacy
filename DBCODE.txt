@@ -1,0 +1,103 @@
+CREATE TABLE pharmacy  (
+PName                    VARCHAR(20) NOT NULL PRIMARY KEY ,
+Phone_Number     VARCHAR(20) NOT NULL,
+address                   VARCHAR(20)
+);
+CREATE TABLE Sale_transaction (
+sale_ID          number (8) NOT NULL PRIMARY KEY,
+sale_date        DATE, 
+price            INTEGER
+);
+
+CREATE TABLE staff(
+s_ID                             number(8) NOT NULL PRIMARY KEY,
+sName                       VARCHAR(8) NOT NULL,
+sAddress                   VARCHAR(20),
+salary                        INTEGER,
+Phone_number        VARCHAR(20) NOT NULL,
+date_of_birth           DATE,
+date_of_hire             DATE,
+years_of_experience     INTEGER,
+specialization          VARCHAR(8),
+PName                   VARCHAR(8),
+FOREIGN KEY (PName) REFERENCES pharmacy(PName)
+);
+CREATE TABLE client1(
+cID                     number(8) NOT NULL PRIMARY KEY,
+cName                   VARCHAR(20) NOT NULL,
+Caddress                VARCHAR(20),
+Phone_Nuber             VARCHAR(20) NOT NULL,
+s_ID                     number(8),
+FOREIGN KEY (s_ID) REFERENCES staff(s_ID)
+);
+
+
+CREATE TABLE Record1(
+rID number (8) NOT NULL PRIMARY KEY,
+s_ID number (8), 
+sale_ID number (8),
+FOREIGN KEY (s_ID ) REFERENCES staff(s_ID),
+FOREIGN KEY (sale_ID) REFERENCES Sale_transaction(sale_ID)
+);
+
+CREATE TABLE Pharmaceutical_company(
+pharID       number(8)  NOT NULL PRIMARY KEY ,
+pharName     VARCHAR(20) NOT NULL,
+address      VARCHAR(20),
+Phone_Number VARCHAR(20) NOT NULL
+);
+CREATE TABLE Drug(
+D_ID           number(8) NOT NULL  PRIMARY KEY,
+dNAME          VARCHAR(8)  NOT NULL,
+barcode        VARCHAR(8),
+dlocation      VARCHAR(20),
+dtype          VARCHAR(8),
+stock          VARCHAR(8),
+price          NUMBER(6),
+expire_date    DATE,
+pharID         number(8),
+PName          VARCHAR(8),
+FOREIGN KEY (pharID) REFERENCES Pharmaceutical_company(pharID),
+FOREIGN KEY (pName) REFERENCES pharmacy (pName)
+);
+CREATE TABLE inclusion(
+iID         number(8) NOT NULL  PRIMARY KEY,
+D_ID        number(8),
+sale_ID     number(8),
+FOREIGN KEY (D_ID) REFERENCES Drug(D_ID),
+FOREIGN KEY (sale_ID) REFERENCES Sale_transaction(sale_ID)
+);
+
+
+CREATE TABLE purchasing(
+pur_ID       number (8)  NOT NULL  PRIMARY KEY,
+D_ID         number (8), 
+cID            number (8),
+FOREIGN KEY (D_ID) REFERENCES Drug(D_ID),
+FOREIGN KEY (cID) REFERENCES client1(cID)
+);
+CREATE TABLE drug_destrbution_company(
+comID             number(8) NOT NULL PRIMARY KEY,
+comName           VARCHAR(20) NOT NULL,
+Address           VARCHAR(20),
+phone_number      VARCHAR(20));
+
+
+CREATE TABLE supply( 
+Sup_ID        number (8) NOT NULL PRIMARY KEY,
+D_ID          number (8), 
+com_ID        number (8),
+FOREIGN KEY (D_ID) REFERENCES Drug(D_ID),
+FOREIGN KEY (com_ID) REFERENCES drug_destrbution_company(comID)
+
+);
+
+
+CREATE TABLE DEALING(
+deal_ID number(8)  NOT NULL PRIMARY KEY,
+pharID number(8),
+comID number(8),
+FOREIGN KEY (comID) REFERENCES drug_destrbution_company(comID),
+FOREIGN KEY (pharID) REFERENCES Pharmaceutical_company(pharID)
+
+);
